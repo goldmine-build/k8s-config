@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jsdoc
+  labels:
+    app: jsdoc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jsdoc
+  template:
+    metadata:
+      labels:
+        app: jsdoc
+    spec:
+      containers:
+      - name: jsdoc
+        image: us-east1-docker.pkg.dev/api-project-146332866891/goldmine/jsdoc@sha256:fc5d095743b693799d4f507d508b8f9cfbc255302baf08ea66b3a051285bca6c
+        ports:
+        - containerPort: 8000
+          name: http
+        - containerPort: 20000
+          name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jsdoc
+spec:
+  selector:
+    app.kubernetes.io/name: jsdoc
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: LoadBalancer    
