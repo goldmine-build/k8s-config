@@ -3,13 +3,6 @@ kind: Kustomization
 resources:
 - jsdoc.yaml
 images:
-- digest: sha256:e85cb4574b6241b2c83e15fd01b51289d5a66215bf68e680ce4d7f2e4d55a8cb
+- digest: sha256:c6e139df27b31765cda937d824a6cc0e7f9cd407b9b01accbda35ba32661104c
   name: us-east1-docker.pkg.dev/api-project-146332866891/goldmine/jsdoc@*
   newName: us-east1-docker.pkg.dev/api-project-146332866891/goldmine/jsdoc
-# Allows setting the digest via the command-line:
-#
-#    kustomize edit set image "us-east1-docker.pkg.dev/api-project-146332866891/goldmine/jsdoc@*=us-east1-docker.pkg.dev/api-project-146332866891/goldmine/jsdoc@sha256:e85cb4574b6241b2c83e15fd01b51289d5a66215bf68e680ce4d7f2e4d55a8cb"
-#
-# To apply:
-#
-#    kubectl apply -k .
