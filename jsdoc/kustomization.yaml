@@ -5,6 +5,3 @@ resources:
 images:
 - digest: 2025-10-02T02_31_34Z-runner-e572421-dirty
   name: ghcr.io/goldmine-build/jsdoc@*
-- digest: sha256:c6e139df27b31765cda937d824a6cc0e7f9cd407b9b01accbda35ba32661104c
-  name: us-east1-docker.pkg.dev/api-project-146332866891/goldmine/jsdoc@*
-  newName: us-east1-docker.pkg.dev/api-project-146332866891/goldmine/jsdoc
