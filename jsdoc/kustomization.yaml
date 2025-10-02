@@ -3,5 +3,5 @@ kind: Kustomization
 resources:
 - jsdoc.yaml
 images:
-- digest: 2025-10-02T02_31_34Z-runner-e572421-dirty
+- digest: 2025-10-02T02_38_28Z-runner-7658376-dirty
   name: ghcr.io/goldmine-build/jsdoc@*
