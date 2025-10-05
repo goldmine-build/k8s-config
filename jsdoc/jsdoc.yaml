@@ -28,6 +28,12 @@ spec:
             port: 20000
           initialDelaySeconds: 1
           periodSeconds: 1     
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 1
+          periodSeconds: 10           
 ---
 apiVersion: v1
 kind: Service
