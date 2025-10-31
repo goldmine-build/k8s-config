@@ -46,4 +46,7 @@ spec:
     - name: http
       port: 8002
       targetPort: 8000
+    - name: metrics
+      port: 20001
+      targetPort: 20000
   type: LoadBalancer
