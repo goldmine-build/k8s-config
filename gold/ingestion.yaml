@@ -35,8 +35,8 @@ spec:
         - name: gold-goldmine-ingestion
           image: ghcr.io/goldmine-build/gold_ingestion:2025-11-04T23_01_50Z-jcgregorio-4ca808c-dirty
           args:
-            - "--common_instance_config=/etc/gold-config/goldmine.json5"
-            - "--config=/etc/gold-config/goldmine-ingestion.json5"
+            - "--common_instance_config=/etc/gold-config/common.json5"
+            - "--config=/etc/gold-config/ingestion.json5"
           ports:
             - containerPort: 9091
               name: http-health
