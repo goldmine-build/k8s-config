@@ -33,7 +33,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: gold-goldmine-ingestion
-          image: us-east1-docker.pkg.dev/api-project-146332866891/goldmine/gold_ingestion:2025-11-03T04_09_24Z-jcgregorio-362e652-dirty
+          image: ghcr.io/goldmine-build/gold_ingestion:2025-11-04T23_01_50Z-jcgregorio-4ca808c-dirty
           args:
             - "--common_instance_config=/etc/gold-config/goldmine.json5"
             - "--config=/etc/gold-config/goldmine-ingestion.json5"
@@ -70,3 +70,7 @@ spec:
           configMap:
             defaultMode: 400
             name: gold-goldmine-config
+        - name: gold-service-account
+          configMap:
+            defaultMode: 400
+            name: gold-service-account
