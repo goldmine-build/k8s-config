@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: jsdoc
-        image: ghcr.io/goldmine-build/jsdoc@sha256:fc5d095743b693799d4f507d508b8f9cfbc255302baf08ea66b3a051285bca6c
+        image: ghcr.io/goldmine-build/jsdoc:2025-11-05T03_00_05Z-jcgregorio-8052be8-dirty
         ports:
         - containerPort: 8000
           name: http
