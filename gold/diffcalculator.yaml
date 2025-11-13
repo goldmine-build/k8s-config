@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gold-goldmine-diffcalculator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gold-goldmine-diffcalculator
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: gold-goldmine-diffcalculator  # Pod template's label selector
+        appgroup: gold
+        goldgroup: 'goldmine'
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: gold-goldmine-diffcalculator
+          image: ghcr.io/goldmine-build/gold_diffcalculator:2025-11-13T04_41_41Z-jcgregorio-3b8b7b0-clean
+          args:
+            - "--config=/etc/gold-config/common.json5"
+          ports:
+            - containerPort: 8000
+              name: http-health
+            - containerPort: 20000
+              name: metrics
+          volumeMounts:
+            - name: gold-goldmine-config-volume
+              mountPath: /etc/gold-config/
+            - name: gold-service-account
+              mountPath: /var/secrets/google              
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/service-account.json
+            - name: K8S_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: 0.5
+              ephemeral-storage: '64M'
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 1
+      volumes:
+        - name: gold-goldmine-config-volume
+          configMap:
+            defaultMode: 400
+            name: gold-goldmine-config
+        - name: gold-service-account
+          configMap:
+            defaultMode: 400
+            name: gold-service-account
