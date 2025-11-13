@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gold-goldmine-gitfollower
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gold-goldmine-gitfollower
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: gold-goldmine-gitfollower  # Pod template's label selector
+        appgroup: gold
+        goldgroup: 'goldmine'
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: gold-goldmine-gitfollower
+          image: ghcr.io/goldmine-build/gold_gitilesfollower:2025-11-13T03_07_20Z-jcgregorio-dfefdcd-dirty
+          args:
+            - "--config=/etc/gold-config/common.json5"
+          ports:
+            - containerPort: 8000
+              name: http-health
+            - containerPort: 20000
+              name: metrics
+          volumeMounts:
+            - name: gold-goldmine-config-volume
+              mountPath: /etc/gold-config/
+            - name: gold-service-account
+              mountPath: /var/secrets/google              
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/service-account.json
+            - name: K8S_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: 0.5
+              ephemeral-storage: '64M'
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 1
+      volumes:
+        - name: gold-goldmine-config-volume
+          configMap:
+            defaultMode: 400
+            name: gold-goldmine-config
+        - name: gold-service-account
+          configMap:
+            defaultMode: 400
+            name: gold-service-account

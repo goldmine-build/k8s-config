@@ -13,7 +13,7 @@
   git_repo_url: "https://github.com/goldmine-build/goldmine.git",
   pubsub_project_id: "api-project-146332866891",
   site_url: "http://goldmine-prime:8080/",
-  sql_connection: "root@goldmine-prime:26257",
+  sql_connection: "root@cockroachdb:26257",
   sql_database: "gold",
   known_hashes_gcs_path: "unknown_hashes/file.txt",
   window_size: 200,
@@ -37,8 +37,6 @@
     backup_poll_scope: "2h",
     ingestion_files_topic: "goldmine-gold-data-files",
     ingestion_subscription: "goldmine-gold-data-files-sub",
-    prom_port: ":20000",
-    ready_port: ":9091",
     primary_branch_config: {
       type: "sql_primary",
       gcs_source: {
