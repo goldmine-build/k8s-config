@@ -32,7 +32,7 @@
     poll_period: "1m",
     system_name: "github",
   },
-  ingestion_config: {
+  ingestion_server_config: {
     backup_poll_interval: "1h",
     backup_poll_scope: "2h",
     ingestion_files_topic: "goldmine-gold-data-files",
