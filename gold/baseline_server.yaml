@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gold-goldmine-baseline-server
+  labels:
+    app: gold-goldmine-baseline-server
+spec:
+  selector:
+    app: gold-goldmine-baseline-server
+  ports:
+    - name: web
+      port: 8007
+      targetPort: 8000
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gold-goldmine-baseline-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gold-goldmine-baseline-server
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: gold-goldmine-baseline-server  # Pod template's label selector
+        appgroup: gold
+        goldgroup: 'goldmine'
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: gold-goldmine-baseline-server
+          image: ghcr.io/goldmine-build/gold_baseline_server:2025-11-14T04_06_56Z-jcgregorio-8f4d0b1-clean
+          args:
+            - "--config=/etc/gold-config/common.json5"
+          ports:
+            - containerPort: 8000
+              name: http-health
+            - containerPort: 20000
+              name: metrics
+          volumeMounts:
+            - name: gold-goldmine-config-volume
+              mountPath: /etc/gold-config/
+            - name: gold-service-account
+              mountPath: /var/secrets/google              
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/service-account.json
+            - name: K8S_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: 0.5
+              ephemeral-storage: '64M'
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 1
+      volumes:
+        - name: gold-goldmine-config-volume
+          configMap:
+            defaultMode: 400
+            name: gold-goldmine-config
+        - name: gold-service-account
+          configMap:
+            defaultMode: 400
+            name: gold-service-account
