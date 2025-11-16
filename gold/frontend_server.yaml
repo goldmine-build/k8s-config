@@ -17,9 +17,12 @@ kind: Ingress
 metadata:
   name: gold-frontend-server
 spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - gold
   rules:
-  - host: gold.goldmine-prime.com
-    http:
+  - http:
       paths:
       - pathType: Prefix
         path: "/"
@@ -50,7 +53,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: gold-frontend-server
-          image: ghcr.io/goldmine-build/gold_frontend_server:2025-11-15T21_29_49Z-jcgregorio-7d4fe3d-clean
+          image: ghcr.io/goldmine-build/gold_frontend_server:2025-11-16T18_30_24Z-jcgregorio-608788a-dirty
           args:
             - "--config=/etc/gold-config/common.json5"
           ports:

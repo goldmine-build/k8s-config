@@ -1,12 +1,12 @@
 {
   code_review_systems: [
-//    {
-//      id: "github",
-//      flavor: "github", 
-//      github_cred_path: "/var/secrets/github/github_token",
-//      github_repo: "goldmine-build/goldmine",
-//      url_template: "https://github.com/goldmine-build/goldmine/pull/%s"
-//    },
+    //    {
+    //      id: "github",
+    //      flavor: "github", 
+    //      github_cred_path: "/var/secrets/github/github_token",
+    //      github_repo: "goldmine-build/goldmine",
+    //      url_template: "https://github.com/goldmine-build/goldmine/pull/%s"
+    //    },
   ],
   gcs_bucket: "goldmine-build-private",
   git_repo_branch: "main",
@@ -56,6 +56,10 @@
     update_traces_ignore_period: "1m",
   },
   frontend_server_config: {
+    proxy_login_header_name: "Tailscale-User-Login",
+    // The instance is restricted by Tailscale access, so only editors can get
+    // access, so all people accessing the instance are known to be editors.
+    bypass_roles: true,
     force_login: false,
     frontend: {
       defaultCorpus: "goldmine",
