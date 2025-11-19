@@ -73,11 +73,14 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: prometheus-headless
+  name: prom
 spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - prom
   rules:
-  - host: prom.goldmine-prime.com
-    http:
+  - http:
       paths:
       - pathType: Prefix
         path: "/"
@@ -172,16 +175,18 @@ spec:
     - name: web
       port: 8004
       targetPort: 9093
-  type: LoadBalancer
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: alertmanager
 spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - am
   rules:
-  - host: am.goldmine-prime.com
-    http:
+  - http:
       paths:
       - pathType: Prefix
         path: "/"

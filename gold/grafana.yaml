@@ -83,16 +83,14 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: grafana-ingress
+  name: grafana
 spec:
-  defaultBackend:
-    service:
-      name: grafana
-      port:
-        number: 9000
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - grafana
   rules:
-  - host: grafana.goldmine-prime.com
-    http:
+  - http:
       paths:
       - pathType: Prefix
         path: "/"
