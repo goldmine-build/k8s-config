@@ -15,6 +15,10 @@ spec:
         app: gold-goldmine-ingestion  # Pod template's label selector
         appgroup: gold
         goldgroup: 'goldmine'
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '/metrics'
+        prometheus.io/port: '20000'        
     spec:
       automountServiceAccountToken: false
       containers:

@@ -13,6 +13,10 @@ spec:
     metadata:
       labels:
         app: jsdoc
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '/metrics'
+        prometheus.io/port: '20000'        
     spec:
       containers:
       - name: jsdoc
