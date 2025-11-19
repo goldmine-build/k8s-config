@@ -23,7 +23,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: gold-goldmine-gitfollower
-          image: ghcr.io/goldmine-build/gold_gitilesfollower:2025-11-13T03_07_20Z-jcgregorio-dfefdcd-dirty
+          image: ghcr.io/goldmine-build/gold_gitilesfollower:2025-11-19T14_15_03Z-jcgregorio-17d70bb-dirty
           args:
             - "--config=/etc/gold-config/common.json5"
           ports:
