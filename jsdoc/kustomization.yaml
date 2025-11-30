@@ -4,4 +4,4 @@ resources:
 - jsdoc.yaml
 images:
 - name: ghcr.io/goldmine-build/jsdoc
-  newTag: 2025-11-30T21_16_48Z-runner-8209f7d-clean
+  newTag: 2025-11-30T23_14_04Z-runner-2de8fb1-dirty
