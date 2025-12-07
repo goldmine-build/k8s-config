@@ -1,12 +1,12 @@
 {
   code_review_systems: [
-    //    {
-    //      id: "github",
-    //      flavor: "github", 
-    //      github_cred_path: "/var/secrets/github/github_token",
-    //      github_repo: "goldmine-build/goldmine",
-    //      url_template: "https://github.com/goldmine-build/goldmine/pull/%s"
-    //    },
+    {
+      id: "github",
+      flavor: "github",
+      github_cred_path: "/usr/local/share/gold-github-creds/credentials.txt",
+      github_repo: "goldmine-build/goldmine",
+      url_template: "https://github.com/goldmine-build/goldmine/pull/%s"
+    },
   ],
   gcs_bucket: "goldmine-build-private",
   git_repo_branch: "main",
