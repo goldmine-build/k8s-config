@@ -23,7 +23,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: gold-goldmine-ingestion
-          image: ghcr.io/goldmine-build/gold_ingestion:2025-12-08T00_29_31Z-jcgregorio-e133817-clean
+          image: ghcr.io/goldmine-build/gold_ingestion:2025-12-08T00_48_09Z-jcgregorio-e133817-dirty
           args:
             - "--config=/etc/gold-config/common.json5"
           ports:
