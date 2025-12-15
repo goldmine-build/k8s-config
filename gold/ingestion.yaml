@@ -36,6 +36,8 @@ spec:
               mountPath: /etc/gold-config/
             - name: gold-service-account
               mountPath: /var/secrets/google              
+            - name: gold-github-creds
+              mountPath: /usr/local/share/gold-github-creds/
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/service-account.json
@@ -50,8 +52,8 @@ spec:
               ephemeral-storage: '64M'
           readinessProbe:
             httpGet:
-              path: /healthz
-              port: 8000
+              path: /metrics
+              port: 20000
             initialDelaySeconds: 3
             periodSeconds: 1
       volumes:
@@ -63,3 +65,7 @@ spec:
           configMap:
             defaultMode: 400
             name: gold-service-account
+        - name: gold-github-creds
+          configMap:
+            defaultMode: 400
+            name: gold-github-creds
