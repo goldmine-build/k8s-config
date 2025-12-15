@@ -11,6 +11,7 @@
   gcs_bucket: "goldmine-build-private",
   git_repo_branch: "main",
   git_repo_url: "https://github.com/goldmine-build/goldmine.git",
+  provider: "gitapi",
   pubsub_project_id: "api-project-146332866891",
   site_url: "http://goldmine-prime:8080/",
   sql_connection: "root@cockroachdb:26257",
