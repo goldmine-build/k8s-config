@@ -1,18 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gold-server
+  labels:
+    app: gold-server
+spec:
+  selector:
+    app: gold-server
+  ports:
+    - name: web
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gold-server
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - gold
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: gold-server
+            port:
+              number: 8000
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gold-goldmine-periodictasks
+  name: gold-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: gold-goldmine-periodictasks
+      app: gold-server
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: gold-goldmine-periodictasks  # Pod template's label selector
+        app: gold-server  # Pod template's label selector
         appgroup: gold
         goldgroup: 'goldmine'
       annotations:
@@ -22,8 +56,8 @@ spec:
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: gold-goldmine-periodictasks
-          image: ghcr.io/goldmine-build/gold_periodictasks:2025-11-14T03_44_46Z-jcgregorio-26cb98f-clean
+        - name: gold-server
+          image: ghcr.io/goldmine-build/gold_server:2025-12-23T21_55_28Z-jcgregorio-06e9f32-dirty
           args:
             - "--config=/etc/gold-config/common.json5"
           ports:
@@ -35,7 +69,9 @@ spec:
             - name: gold-goldmine-config-volume
               mountPath: /etc/gold-config/
             - name: gold-service-account
-              mountPath: /var/secrets/google              
+              mountPath: /var/secrets/google  
+            - name: gold-github-creds
+              mountPath: /usr/local/share/gold-github-creds            
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/service-account.json
@@ -46,8 +82,12 @@ spec:
           resources:
             requests:
               memory: "1Gi"
-              cpu: 0.5
+              cpu: "1"
               ephemeral-storage: '64M'
+            limits:
+              memory: "2Gi"
+              cpu: "2"
+              ephemeral-storage: '128M'
           readinessProbe:
             httpGet:
               path: /healthz
@@ -63,3 +103,8 @@ spec:
           configMap:
             defaultMode: 400
             name: gold-service-account
+        - name: gold-github-creds
+          configMap:
+            defaultMode: 400
+            name: gold-github-creds
+          
