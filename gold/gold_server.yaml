@@ -60,9 +60,17 @@ spec:
           image: ghcr.io/goldmine-build/gold_server:2025-12-23T21_55_28Z-jcgregorio-06e9f32-dirty
           args:
             - "--config=/etc/gold-config/common.json5"
+            - "--port=:8000"
+            - "--pprof_port=:9000"
+            - "--healthz=:10000"
+            - "--prom_port=:20000"
           ports:
             - containerPort: 8000
-              name: http-health
+              name: http
+            - containerPort: 9000
+              name: pprof
+            - containerPort: 10000
+              name: healthz
             - containerPort: 20000
               name: metrics
           volumeMounts:
@@ -91,7 +99,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /healthz
-              port: 8000
+              port: 10000
             initialDelaySeconds: 3
             periodSeconds: 1
       volumes:
