@@ -57,7 +57,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: gold-server
-          image: ghcr.io/goldmine-build/gold_server:2025-12-23T21_55_28Z-jcgregorio-06e9f32-dirty
+          image: ghcr.io/goldmine-build/gold_server:2025-12-23T22_44_54Z-jcgregorio-a768f9d-dirty
           args:
             - "--config=/etc/gold-config/common.json5"
             - "--port=:8000"
