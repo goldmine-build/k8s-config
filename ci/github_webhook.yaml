@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: github-webhook
+  labels:
+    app: github-webhook
+spec:
+  selector:
+    app: github-webhook
+  ports:
+    - name: web
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: github-webhook
+  annotations:
+    tailscale.com/funnel: "true"  
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - github-webhook
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: github-webhook
+            port:
+              number: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-webhook
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: github-webhook
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: github-webhook  # Pod template's label selector
+        appgroup: ci
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '/metrics'
+        prometheus.io/port: '20000'        
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: github-webhook
+          image: ghcr.io/goldmine-build/github-webhook:2025-12-25T23_40_46Z-jcgregorio-a768f9d-dirty
+          args:
+            - "--port=:8000"
+            - "--pprof_port=:9000"
+            - "--prom_port=:20000"
+            - "--healthz_port=:10000"
+            - "--secret=/etc/github-webhook-secret/secret"
+          ports:
+            - containerPort: 8000
+              name: http
+            - containerPort: 9000
+              name: pprof
+            - containerPort: 10000
+              name: healthz
+            - containerPort: 20000
+              name: metrics
+          volumeMounts:
+            - name: github-webhook-secret
+              mountPath: /etc/github-webhook-secret/
+          env:
+            - name: K8S_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "100m"
+              ephemeral-storage: '64M'
+            limits:
+              memory: "100Mi"
+              cpu: "200m"
+              ephemeral-storage: '128M'
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 10000
+            initialDelaySeconds: 3
+            periodSeconds: 1
+      volumes:
+        - name: github-webhook-secret
+          configMap:
+            defaultMode: 400
+            name: github-webhook-secret
+          
