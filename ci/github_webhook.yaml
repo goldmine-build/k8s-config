@@ -65,6 +65,11 @@ spec:
             - "--prom_port=:20000"
             - "--healthz_port=:10000"
             - "--secret=/etc/github-webhook-secret/secret"
+            - "--store_cred_dir=/etc/gcs-as-s3-hmac-secrets"
+            - "--store_endpoint=storage.googleapis.com"
+            - "--store_ssl=true"
+            - "--store_bucket=goldmine-ci"
+            - "--store_pr_path=/pr"
           ports:
             - containerPort: 8000
               name: http
@@ -77,6 +82,8 @@ spec:
           volumeMounts:
             - name: github-webhook-secret
               mountPath: /etc/github-webhook-secret/
+            - name: gcs-as-s3-hmac-secrets
+              mountPath: /etc/gcs-as-s3-hmac-secrets
           env:
             - name: K8S_POD_NAME
               valueFrom:
@@ -102,4 +109,9 @@ spec:
           configMap:
             defaultMode: 400
             name: github-webhook-secret
+        - name: gcs-as-s3-hmac-secrets
+          configMap:
+            defaultMode: 400
+            name: gcs-as-s3-hmac-secrets
+
           
