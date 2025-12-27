@@ -111,3 +111,23 @@ spec:
   - name: http
     port: 3100
     targetPort: 3100
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: loki
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - loki
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: loki
+            port:
+              number: 3100    
