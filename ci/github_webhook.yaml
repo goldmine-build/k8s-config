@@ -58,7 +58,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: github-webhook
-          image: ghcr.io/goldmine-build/github-webhook:2025-12-27T15_08_37Z-jcgregorio-131b292-dirty
+          image: ghcr.io/goldmine-build/github-webhook:2025-12-30T04_31_10Z-jcgregorio-786f62f-dirty
           args:
             - "--port=:8000"
             - "--pprof_port=:9000"
