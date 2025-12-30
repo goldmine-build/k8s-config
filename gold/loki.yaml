@@ -104,7 +104,6 @@ metadata:
   name: loki
   namespace: default
 spec:
-  clusterIP: None
   selector:
     app: loki
   ports:
