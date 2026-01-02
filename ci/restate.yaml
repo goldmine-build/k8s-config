@@ -1,0 +1,95 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: restate-server
+  namespace: default
+spec:
+  serviceName: restate-server
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restate-server
+  template:
+    metadata:
+      labels:
+        app: restate-server
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '/metrics'
+        prometheus.io/port: '5122'        
+    spec:
+      containers:
+      - name: restate-server
+        image: docker.restate.dev/restatedev/restate
+        ports:
+        - name: ui
+          containerPort: 9070
+          protocol: TCP
+        - name: api
+          containerPort: 8080
+          protocol: TCP
+        - name: metrics
+          containerPort: 5122
+          protocol: TCP
+        args:
+        - --log-disable-ansi-codes=true 
+        - --log-format=compact 
+        - --base-dir=/restate-server
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        volumeMounts:
+        - name: restate-server-storage
+          mountPath: /restate-server
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 5122
+          initialDelaySeconds: 3
+          periodSeconds: 1
+  volumeClaimTemplates:
+  - metadata:
+      name: restate-server-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: restate-server
+  namespace: default
+spec:
+  selector:
+    app: restate-server
+  ports:
+  - name: http
+    port: 9070
+    targetPort: 9070
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: restate-server
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - restate-server
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: restate-server
+            port:
+              number: 9070    
