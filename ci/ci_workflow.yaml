@@ -67,11 +67,11 @@ spec:
               value: /etc/bazel/.bazelrc
           resources:
             requests:
-              memory: "4Gi"
+              memory: "10Gi"
               cpu: "10"
               ephemeral-storage: '1G'
             limits:
-              memory: "8Gi"
+              memory: "15Gi"
               cpu: "11"
               ephemeral-storage: '2G'
           readinessProbe:
