@@ -35,7 +35,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: ci-workflow
-          image: ghcr.io/goldmine-build/ci_workflow_server:2026-01-03T18_14_52Z-jcgregorio-01482eb-dirty
+          image: ghcr.io/goldmine-build/ci_workflow_server:2026-01-03T18_17_46Z-jcgregorio-01482eb-dirty
           args:
             - "--port=:8000"
             - "--pprof_port=:9000"
