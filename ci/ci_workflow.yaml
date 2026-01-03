@@ -64,7 +64,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: BAZELRC
-              value: /etc/bazel/.bazelrc
+              value: /etc/bazel/
           readinessProbe:
             httpGet:
               path: /metrics
