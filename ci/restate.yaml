@@ -78,7 +78,7 @@ metadata:
   namespace: default
 spec:
   selector:
-    app: restate-requests
+    app: restate-server
   ports:
   - name: http
     port: 8080
