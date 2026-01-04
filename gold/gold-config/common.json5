@@ -14,7 +14,7 @@
   provider: "gitapi",
   pubsub_project_id: "api-project-146332866891",
   site_url: "https://gold.tail433733.ts.net/",
-  sql_connection: "root@cockroachdb:26257",
+  sql_connection: "root@cockroachdb-public:26257",
   sql_database: "gold",
   known_hashes_gcs_path: "goldmine-build-private/known-hashes.txt",
   window_size: 200,

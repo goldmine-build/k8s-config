@@ -94,10 +94,6 @@ spec:
               memory: "50Mi"
               cpu: "100m"
               ephemeral-storage: '64M'
-            limits:
-              memory: "100Mi"
-              cpu: "200m"
-              ephemeral-storage: '128M'
           readinessProbe:
             httpGet:
               path: /healthz
