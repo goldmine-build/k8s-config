@@ -10,7 +10,7 @@ spec:
   ports:
     - name: web
       port: 8000
-      targetPort: 8000
+      targetPort: 8001
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -37,22 +37,22 @@ spec:
         - name: ci-workflow
           image: ghcr.io/goldmine-build/ci_workflow_server:2026-01-04T04_21_37Z-jcgregorio-af99915-dirty
           args:
-            - "--port=:8000"
-            - "--pprof_port=:9000"
-            - "--prom_port=:20000"
+            - "--port=:8001"
+            - "--pprof_port=:9001"
+            - "--prom_port=:20001"
             - "--checkout_dir=/tmp/goldmine"
             - "--pat_path=/etc/github-ci-status/secret"
           securityContext:
             runAsUser: 2000
             runAsGroup: 2000            
           ports:
-            - containerPort: 8000
+            - containerPort: 8001
               name: http
-            - containerPort: 9000
+            - containerPort: 9001
               name: pprof
-            - containerPort: 10000
+            - containerPort: 10001
               name: healthz
-            - containerPort: 20000
+            - containerPort: 20001
               name: metrics
           volumeMounts:
             - name: github-ci-status
@@ -71,20 +71,20 @@ spec:
           readinessProbe:
             httpGet:
               path: /metrics
-              port: 20000
+              port: 20001
             initialDelaySeconds: 3
             periodSeconds: 1
       volumes:
         - name: github-ci-status
           configMap:
-            defaultMode: 400
+            defaultMode: 444
             name: github-ci-status
         - name: gold-github-creds
           configMap:
-            defaultMode: 400
+            defaultMode: 444
             name: gold-github-creds
         - name: bazelrc
           configMap:
-            defaultMode: 400
+            defaultMode: 444
             name: bazelrc
           
