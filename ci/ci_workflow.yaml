@@ -30,7 +30,7 @@ spec:
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/path: '/metrics'
-        prometheus.io/port: '20000'        
+        prometheus.io/port: '20001'        
     spec:
       automountServiceAccountToken: false
       containers:
