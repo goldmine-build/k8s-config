@@ -61,6 +61,8 @@ spec:
               mountPath: /etc/bazel/
             - name: gold-github-creds
               mountPath: /usr/local/share/gold-github-creds            
+            - name: gold-service-account
+              mountPath: /etc/gcs
           env:
             - name: K8S_POD_NAME
               valueFrom:
@@ -85,4 +87,8 @@ spec:
           configMap:
             defaultMode: 444
             name: bazelrc
+        - name: gold-service-account
+          configMap:
+            defaultMode: 444
+            name: gold-service-account
           
