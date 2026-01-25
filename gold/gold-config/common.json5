@@ -28,7 +28,7 @@
     // First commit when goldmine-build was forked from skia buildbot.
     initial_commit: "82495c217ef2433a931382d2299840f48a0ca30c",
     extraction_technique: "FromSubject",
-    poll_period: "1m",
+    poll_period: "10m",
     system_name: "github",
   },
   ingestion_server_config: {
